@@ -7,3 +7,4 @@ This program will display a Corridor using triangles that looks 3D but is actual
 
 #### How it works:
 
+![Example](https://i.imgur.com/LCb2KOo.png)
