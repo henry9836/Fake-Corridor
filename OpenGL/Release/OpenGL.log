@@ -1,0 +1,7 @@
+﻿  main.cpp
+g:\uni\2019\opengl\opengl\opengl\main.cpp(44): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  ShaderLoader.cpp
+  Generating code
+  All 231 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  OpenGL.vcxproj -> G:\UNI\2019\OPENGL\OpenGL\Release\OpenGL.exe
