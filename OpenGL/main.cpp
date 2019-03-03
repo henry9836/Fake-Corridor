@@ -14,6 +14,35 @@ GLuint groundpro = NULL;
 GLuint toppro = NULL;
 GLuint wallpro1 = NULL;
 GLuint wallpro2 = NULL;
+GLfloat currentTime;
+
+//GLOBAL Verts
+GLuint Light = NULL;
+GLfloat Light_vertices[] = {
+	0.075f, 0.3f, 0.0f, 0.97f, 0.86f, 0.21f,
+	0.6f, 0.9f, 0.0f,	0.97f, 0.86f, 0.21f,
+	-0.6f, 0.9f, 0.0f,	0.97f, 0.86f, 0.21f,
+	0.075f, 0.3f, 0.0f, 0.97f, 0.86f, 0.21f,
+	-0.6f, 0.9f, 0.0f,	0.97f, 0.86f, 0.21f,
+	-0.075f, 0.3f, 0.0f,0.97f, 0.86f, 0.21f,
+};
+GLuint VAO;
+GLuint VBO;
+
+GLuint Paintingpro = NULL;
+GLfloat Painting_vertices[] = {
+	0.9f, -0.2f, 0.0f, 0.1f, 0.0f, 0.0f,
+	0.9f, 0.1f, 0.0f,	0.0f, 0.1f, 0.0f,
+	0.5f, 0.0f, 0.0f,	0.0f, 0.0f, 0.1f,
+	0.5f, 0.0f, 0.0f, 0.0f, 0.0f, 0.1f,
+	0.9f, 0.1f, 0.0f, 0.0f, 0.1f, 0.0f,
+	0.5f, 0.2f, 0.0f, 0.1f, 0.0f, 0.0f,
+};
+GLuint VAO_Painting;
+GLuint VBO_Painting;
+
+
+
 
 void Render() {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -36,8 +65,37 @@ void Render() {
 	glUseProgram(wallpro2);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	glUseProgram(0);
+	
+	
+	glUseProgram(Light);
+	glBindVertexArray(VAO);
+
+	GLint currentTimeLoc = glGetUniformLocation(Light, "currentTime");
+	glUniform1f(currentTimeLoc, currentTime);
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+	glUseProgram(0);
+	
+	glUseProgram(Paintingpro);
+	glBindVertexArray(VAO_Painting);
+	
+	glUniform1f(currentTimeLoc, currentTime);
+
+	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glBindVertexArray(0);
+	glUseProgram(0);
 
 	glutSwapBuffers();
+}
+
+void Update() {
+	currentTime = glutGet(GLUT_ELAPSED_TIME);
+	currentTime = currentTime * 0.001f;
+
+
+
+	glutPostRedisplay();
 }
 
 int main(int argc, char **argv) {
@@ -63,7 +121,61 @@ int main(int argc, char **argv) {
 	wallpro1 = ShaderLoader::CreateProgram("side1.vs", "side1.fs");
 	wallpro2 = ShaderLoader::CreateProgram("side2.vs", "side2.fs");
 
+	Light = ShaderLoader::CreateProgram("light.vs", "light.fs");
+	Paintingpro = ShaderLoader::CreateProgram("light.vs", "light.fs");
+	
+
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Light_vertices), Light_vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(
+		0,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		6 * sizeof(GLfloat),
+		(GLvoid*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		1,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		6 * sizeof(GLfloat),
+		(GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+
+
+
+	glGenVertexArrays(1, &VAO_Painting);
+	glBindVertexArray(VAO_Painting);
+	glGenBuffers(1, &VBO_Painting);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO_Painting);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Painting_vertices), Painting_vertices, GL_STATIC_DRAW);
+	glVertexAttribPointer(
+		0,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		6 * sizeof(GLfloat),
+		(GLvoid*)0);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(
+		1,
+		3,
+		GL_FLOAT,
+		GL_FALSE,
+		6 * sizeof(GLfloat),
+		(GLvoid*)(3 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(1);
+
+	
 	glutDisplayFunc(Render);
+
+	glutIdleFunc(Update);
 
 	glutMainLoop();
 

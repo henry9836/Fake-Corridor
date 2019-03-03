@@ -55,6 +55,12 @@
     <None Include="top.vs">
       <Filter>Source Files</Filter>
     </None>
+    <None Include="light.fs">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="light.vs">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="triangle.vs">

@@ -150,6 +150,8 @@
   <ItemGroup>
     <None Include="ground.fs" />
     <None Include="ground.vs" />
+    <None Include="light.fs" />
+    <None Include="light.vs" />
     <None Include="side1.fs" />
     <None Include="side1.vs" />
     <None Include="side2.fs" />
